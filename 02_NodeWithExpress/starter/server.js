@@ -3,6 +3,8 @@ import express from "express";
 import mongoose from "mongoose";
 
 import { router as allTodos } from "./routes/alltodos.js"
+import { router as addTodo } from "./routes/addTodo.js"
+import { router as singleTodo } from "./routes/singleTodo.js"
 
 const app = express();
 
@@ -17,7 +19,9 @@ const main = async() => {
 }
 
 // app.get(`/`, (req, res) => res.send(`Hello World`));
-app.use("/todos", allTodos);
+app.use("/", allTodos);
+app.use("/add", addTodo);
+app.use("/todo", singleTodo);
 
 const server = app.listen(port, host, () => {
     const SERVERHOST = server.address().address;
@@ -25,8 +29,6 @@ const server = app.listen(port, host, () => {
     console.log(`Server is running on http://${SERVERHOST}:${SERVERPORT}`);
 })
 
-try {
-    main();
-} catch (e) {
-    console.log(e);
-}
+main().catch(e => {
+    console.error(e.message);
+})
