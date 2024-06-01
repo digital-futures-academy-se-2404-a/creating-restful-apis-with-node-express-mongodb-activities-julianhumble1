@@ -19,6 +19,7 @@ const main = async() => {
 }
 
 // app.get(`/`, (req, res) => res.send(`Hello World`));
+app.use(express.json());
 app.use("/", allTodos);
 app.use("/add", addTodo);
 app.use("/todo", singleTodo);

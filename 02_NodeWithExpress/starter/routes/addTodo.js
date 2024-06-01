@@ -9,7 +9,7 @@ router.route("/").post(async(req, res) => {
     try {
         let newTodo = new Todo(newTodoData);
         await newTodo.save();
-        res.status(200).send("Todo added successfully");
+        res.json(newTodo);
     } catch (e) {
         res.status(400).send("Add failed");
     }

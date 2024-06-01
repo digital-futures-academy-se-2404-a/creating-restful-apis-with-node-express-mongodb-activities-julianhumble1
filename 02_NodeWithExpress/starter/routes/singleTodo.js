@@ -16,14 +16,22 @@ router.route("/:id").get(async(req, res) => {
 
 router.route("/:id").post(async(req, res) => {
     const id = req.params.id;
+    const replacementTodo = {
+        todoDescription: req.body.todoDescription,
+        todoDateCreated: req.body.todoDateCreated,
+        todoCompleted: req.body.todoCompleted
+    }
     try {
-        const editTodo = await Todo.findById(id)
-        editTodo.todoDescription = req.body.todoDescription;
-        editTodo.todoDateCreated = req.body.todoDateCreated;
-        editTodo.todoCompleted = req.body.todoCompleted;
-        await Todo.save();
-        res.json(editTodo);
+        const updatedTodo = await Todo.findOneAndUpdate({ _id: id }, replacementTodo, {
+            new: true,
+        });
+        if (!updatedTodo) {
+            res.status(404).send("Todo not found")
+        } else {
+            res.json(updatedTodo);
+        }
     } catch (e) {
+        console.log(e);
         res.status(404).send("Failed to update")
     }
 })
